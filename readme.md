@@ -1,32 +1,65 @@
-# Texture Synthesis by Non-parametric Sampling
-
-This project implements Efros and Leung's 'Texture Synthesis by Non-parametric Sampling' (1999).
-
-The algorithm synthesizes a new texture from an existing input by sampling the center pixel from a local neighborhood of the sample that best "matches" a local neighborhood in the current state of the synthesized texture.
-
 ## Usage
 
-`python synthesis.py --sample_path=<input_path> --out_path=[output_path] --window_height=[win_height] --window_width=[win_width] --kernel_size=[ksize] --visualize`
+Only need to change the patch size for our 289 class purpose:
 
-* `input_path` - Path to the input texture sample.
-* `output_path` - (Optional) Output path for the synthesized texture.
-* `win_height` - (Optional) Height of the synthesized texture. 50 pixels is the default.
-* `win_width` - (Optional) Width of the synthesized texture. 50 pixels is the default.
-* `ksize` - (Optional) Width of a square synthesis kernel. Each synthesized pixel value is selected by computing a distance metric between local neighborhoods of height and width `ksize` between the current state of the synthesized texture and the input texture sample. 11 pixels is the default, but this value can be raised (lowered) to increase (decrease) the regularity of the synthesized texture.
-* `visualize` - (Optional) Visualize an in-progress texture synthesis.
+```
+python -u mnist_synthesis.py --k 3  --seed 0
+python -u mnist_synthesis.py --k 5  --seed 0
+python -u mnist_synthesis.py --k 7  --seed 0
+python -u mnist_synthesis.py --k 9  --seed 0
+python -u mnist_synthesis.py --k 3  --seed 42
+python -u mnist_synthesis.py --k 5  --seed 42
+python -u mnist_synthesis.py --k 7  --seed 42
+python -u mnist_synthesis.py --k 9  --seed 42
+```
 
-## Dependencies
+It will generate the results in the output/ directory by default:
 
-* Python - Tested on version 3.7.0
-* OpenCV - Tested on version 3.4.1
-* NumPy - Tested on version 1.15.0
+seed_patch_k{<k>}_seed{<seed>}.png — the extracted seed patch
 
-## Results
+seed_original_k{<k>}_seed{<seed>}.png — the full MNIST image with the seed patch outlined in red
 
-The following are selected results of this procedure. The leftmost column contains input texture samples and the rightmost column contains output synthesized textures. The middle column shows the completion of "layers" of the synthesis process.
+result_k{<k>}_seed{<seed>}.png — the final synthesized image
 
-| <p align="center"> Input Sample </p> | <p align="center"> Synthesis Process </p> | <p align="center"> Output Texture </p>
-| ------------ | ------------- | --------------
-| <p align="center">![161 Input](examples/161.jpg)  </p> | <p align="center"> ![161 Synthesis](examples/161.gif) </p> | <p align="center"> ![161 Output](examples/161_out.jpg) </p>
-| <p align="center">![D3 Input](examples/D3.jpg) </p> | <p align="center"> ![D3 Synthesis](examples/D3.gif) </p> | <p align="center"> ![D3 Output](examples/D3_out.jpg) </p>
-| <p align="center">![Wood Input](examples/wood.jpg) </p> | <p align="center"> ![Wood Synthesis](examples/wood.gif) </p> | <p align="center"> ![Wood Output](examples/wood_out.jpg) </p>
+anim_k{<k>}_seed{<seed>}.gif — an optional GIF animation of the synthesis process
+
+
+More Detail:
+
+`python mnist_synthesis.py --win_h 28 --win_w 28 --k 7 --th 0.1 --seed 42 --seed_out output/seed_patch_k7.png --seed_img output seed_original_k7.png --gif output/anim_k7.gif --fps 30 --out output/result_k7.png`
+
+
+--win_h
+Height of the output canvas in pixels. Defaults to 28.
+
+--win_w
+Width of the output canvas in pixels. Defaults to 28.
+
+--k
+Patch size; each patch is k×k. Defaults to 7.
+
+--th
+Normalized error threshold ε for candidate selection. Defaults to 0.1.
+
+--seed
+Random seed for reproducible results. Defaults to 42.
+
+--seed_out
+(Optional) Path to save the extracted seed patch image.
+Defaults to output/seed_patch_k{<k>}_seed{<seed>}.png.
+
+--seed_img
+(Optional) Path to save the original 28×28 MNIST image with the seed patch outlined in red.
+Defaults to output/seed_original_k{<k>}_seed{<seed>}.png.
+
+--gif
+(Optional) Path to save an animation GIF of the synthesis process.
+Defaults to output/anim_k{<k>}_seed{<seed>}.gif.
+
+--fps
+Frame rate (frames per second) for the output GIF. Defaults to 30.
+
+--out
+(Optional) Path to save the final synthesized image.
+Defaults to output/result_k{<k>}_seed{<seed>}.png.
+
