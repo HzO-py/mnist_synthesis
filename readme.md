@@ -1,6 +1,19 @@
+## Results
+
+You can review the results in the output/ directory:
+
+seed_patch_k{<k>}_seed{<seed>}.png — the extracted seed patch
+
+seed_original_k{<k>}_seed{<seed>}.png — the full MNIST image with the seed patch outlined in red
+
+result_k{<k>}_seed{<seed>}.png — the final synthesized image
+
+anim_k{<k>}_seed{<seed>}.gif — an optional GIF animation of the synthesis process
+
+
 ## Usage
 
-Only need to change the patch size for our 289 class purpose:
+Only need to change the patch size for our 289 class purpose, it will generate the results in the output/ directory by default.:
 
 ```
 python -u mnist_synthesis.py --k 3  --seed 0
@@ -12,17 +25,6 @@ python -u mnist_synthesis.py --k 5  --seed 42
 python -u mnist_synthesis.py --k 7  --seed 42
 python -u mnist_synthesis.py --k 9  --seed 42
 ```
-
-It will generate the results in the output/ directory by default:
-
-seed_patch_k{<k>}_seed{<seed>}.png — the extracted seed patch
-
-seed_original_k{<k>}_seed{<seed>}.png — the full MNIST image with the seed patch outlined in red
-
-result_k{<k>}_seed{<seed>}.png — the final synthesized image
-
-anim_k{<k>}_seed{<seed>}.gif — an optional GIF animation of the synthesis process
-
 
 More Detail:
 
